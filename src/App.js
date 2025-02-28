@@ -301,7 +301,7 @@ const RandomCardApp = () => {
     switch (step) {
       case 'intro':
         return (
-          <div className="flex flex-col items-center text-center p-6 space-y-6">
+          <div className="card">
             <h1 className="text-2xl font-bold text-purple-700">Ứng Dụng Rút Bài Ngẫu Nhiên</h1>
             <div className="bg-purple-100 p-4 rounded-lg shadow">
               <h2 className="font-bold mb-2">Hướng dẫn sử dụng:</h2>
@@ -322,7 +322,7 @@ const RandomCardApp = () => {
         
       case 'question':
         return (
-          <div className="flex flex-col items-center p-6 space-y-6 max-w-lg mx-auto">
+          <div className="card">
             <h2 className="text-xl font-semibold text-purple-300">Nghĩ về câu hỏi của bạn</h2>
             <div className="w-full">
               <textarea
@@ -351,7 +351,7 @@ const RandomCardApp = () => {
         
       case 'countdown':
         return (
-          <div className="flex flex-col items-center justify-center p-6 space-y-8">
+          <div className="card">
             <h2 className="text-xl font-semibold text-purple-300">Hãy tập trung vào câu hỏi của bạn</h2>
             
             <div className="flex flex-col items-center">
@@ -406,7 +406,7 @@ const RandomCardApp = () => {
         
       case 'answer':
         return (
-          <div className="flex flex-col items-center p-6 space-y-6">
+          <div className="card">
             <h2 className="text-xl font-semibold text-purple-300">Câu trả lời của bạn</h2>
             
             {question && (
