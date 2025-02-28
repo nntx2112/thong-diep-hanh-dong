@@ -234,6 +234,7 @@ const RandomCardApp = () => {
   // Hàm gửi dữ liệu đến Google Sheets
   const sendToGoogleSheet = async (data) => {
     try {
+      // Sử dụng URL triển khai của bạn
       const response = await fetch(
         'https://script.google.com/macros/s/AKfycbyAwl-MNiO8HDaKCFxHbyMIjgJ3fM3L_OenOxhcnhWVVhhDSUmDkdz1h9L0TpHI-Q2LQA/exec',
         {
@@ -242,14 +243,14 @@ const RandomCardApp = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(data),
-          mode: 'no-cors',
         }
       );
-  
-      const result = await response.json();
-      console.log('Đã gửi dữ liệu thành công', result);
+      
+      console.log('Đã gửi yêu cầu thành công', response);
+      return true;
     } catch (error) {
       console.error('Lỗi khi gửi dữ liệu:', error);
+      return false;
     }
   };
 
@@ -262,6 +263,7 @@ const RandomCardApp = () => {
       answer: answer,
       feedback: type,
       feedbackText: feedbackText,
+      timestamp: new Date().toISOString()
     };
 
     // Gửi dữ liệu đến Google Sheet
