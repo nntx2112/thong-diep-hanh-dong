@@ -235,7 +235,7 @@ const RandomCardApp = () => {
   const sendToGoogleSheet = async (data) => {
     try {
       const response = await fetch(
-        'https://script.google.com/macros/s/AKfycbx6wyQfFUyWdYhov38ihSUz8wgs6Fn1QrndeKUV2oHsrhcjveXtDT8EwbqBQrWKZHC6/exec',
+        'https://script.google.com/macros/s/AKfycbyAwl-MNiO8HDaKCFxHbyMIjgJ3fM3L_OenOxhcnhWVVhhDSUmDkdz1h9L0TpHI-Q2LQA/exec',
         {
           method: 'POST',
           headers: {
