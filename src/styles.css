@@ -1,3 +1,4 @@
+/* Thiết lập cơ bản */
 body {
   background: linear-gradient(to bottom, #1a1a2e, #16213e, #0f172a);
   color: #fff;
@@ -7,10 +8,45 @@ body {
   padding: 0;
 }
 
-h1, h2, h3 {
-  color: #f3c06b;
+/* Container chính */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Header */
+.app-header {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #8b5cf6;
+}
+
+.header-title {
+  color: #d8b4fe;
+  font-weight: bold;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Main content */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+/* Card container */
 .card {
   background-color: rgba(60, 50, 80, 0.2);
   border: 2px solid #8b5cf6;
@@ -19,8 +55,26 @@ h1, h2, h3 {
   margin: 20px auto;
   max-width: 500px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
+/* Typography */
+.title {
+  color: #f3c06b;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.subtitle {
+  color: #d8b4fe;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Answer card */
 .answer-card {
   background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(60, 50, 80, 0.3));
   border: 4px solid;
@@ -30,18 +84,160 @@ h1, h2, h3 {
   margin: 30px auto;
   color: #f3c06b;
   font-size: 18px;
+  width: 100%;
+  max-width: 500px;
 }
 
+/* Buttons */
 .button {
-  background-color: #8b5cf6;
+  background: linear-gradient(to right, #8b5cf6, #6366f1);
   color: white;
-  padding: 8px 16px;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  padding: 12px 24px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .button:hover {
-  background-color: #7c3aed;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+}
+
+.button.secondary {
+  background: #4f46e5;
+  font-size: 0.9rem;
+  padding: 8px 16px;
+}
+
+.icon-button {
+  background: transparent;
+  color: #d8b4fe;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.icon-button:hover {
+  color: white;
+}
+
+/* Feedback section */
+.feedback-container {
+  background-color: rgba(30, 41, 59, 0.7);
+  border: 1px solid #4f46e5;
+  border-radius: 8px;
+  padding: 16px;
+  width: 100%;
+}
+
+.feedback-title {
+  color: white;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.feedback-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.feedback-button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.3s;
+  border: 1px solid;
+}
+
+.feedback-button.useful {
+  background-color: rgba(22, 163, 74, 0.3);
+  border-color: #16a34a;
+  color: white;
+}
+
+.feedback-button.understand {
+  background-color: rgba(37, 99, 235, 0.3);
+  border-color: #2563eb;
+  color: white;
+}
+
+.feedback-button.difficult {
+  background-color: rgba(220, 38, 38, 0.3);
+  border-color: #dc2626;
+  color: white;
+}
+
+.feedback-button.active {
+  background-color: currentColor;
+  color: white;
+}
+
+/* Footer */
+.app-footer {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 0.75rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #d8b4fe;
+  border-top: 1px solid #7e22ce;
+}
+
+/* Form elements */
+.input-field {
+  width: 100%;
+  background-color: rgba(30, 41, 59, 0.7);
+  border: 1px solid #4f46e5;
+  border-radius: 8px;
+  padding: 12px;
+  color: white;
+  outline: none;
+}
+
+.input-field:focus {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
+}
+
+/* Countdown */
+.countdown-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.countdown-circle {
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+  background: linear-gradient(to right, #4f46e5, #7e22ce);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid #d8b4fe;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.countdown-number {
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+}
+
+/* Decorative elements */
+.mystical-text {
+  color: #f59e0b;
+  font-size: 0.875rem;
+  text-align: center;
+  font-style: italic;
 }
