@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Clock, Share2, Heart, RefreshCw, HelpCircle, Settings, ThumbsUp, ThumbsDown } from 'lucide-react';
 
 const RandomCardApp = () => {
@@ -380,20 +381,57 @@ return (
   </div>
 );
 };
-const sendToGoogleSheet = async (data) => {
-  try {
-    const response = await axios.post(
-      'https://script.google.com/macros/s/AKfycbx6wyQfFUyWdYhov38ihSUz8wgs6Fn1QrndeKUV2oHsrhcjveXtDT8EwbqBQrWKZHC6/exec', 
-      data,
-      {
-        headers: {
-          'Content-Type': 'application/json'
+// Thêm hàm sendToGoogleSheet vào trong component
+  const sendToGoogleSheet = async (data) => {
+    try {
+      const response = await axios.post(
+        'https://script.google.com/macros/s/AKfycbx6wyQfFUyWdYhov38ihSUz8wgs6Fn1QrndeKUV2oHsrhcjveXtDT8EwbqBQrWKZHC6/exec', 
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
-      }
-    );
-    console.log('Đã gửi dữ liệu thành công', response.data);
-  } catch (error) {
-    console.error('Lỗi khi gửi dữ liệu:', error);
-  }
-};
+      );
+      console.log('Đã gửi dữ liệu thành công', response.data);
+    } catch (error) {
+      console.error('Lỗi khi gửi dữ liệu:', error);
+    }
+  };
+
+  // Sửa hàm handleFeedback để sử dụng sendToGoogleSheet
+  const handleFeedback = (type) => {
+    setFeedback(type);
+    
+    const sheetData = {
+      question: question || "Không có câu hỏi",
+      answer: answer,
+      feedback: type,
+      feedbackText: feedbackText
+    };
+    
+    // Gửi dữ liệu đến Google Sheet
+    sendToGoogleSheet(sheetData);
+    // Các xử lý khác như cũ...
+    try {
+      const feedbackData = {
+        question: question || "Không có câu hỏi",
+        answer: answer,
+        feedbackType: type,
+        feedbackText: feedbackText,
+        timestamp: new Date().toISOString()
+      };
+      
+      const allFeedback = JSON.parse(localStorage.getItem('feedbackData') || '[]');
+      allFeedback.push(feedbackData);
+      localStorage.setItem('feedbackData', JSON.stringify(allFeedback));
+      
+      alert("Cảm ơn bạn đã gửi phản hồi!");
+      
+      setFeedbackText('');
+    } catch (e) {
+      console.error("Không thể lưu phản hồi", e);
+    }
+  };
+      
 export default RandomCardApp;
