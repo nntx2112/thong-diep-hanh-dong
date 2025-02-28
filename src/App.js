@@ -350,7 +350,7 @@ const renderStep = () => {
         </div>
       );
       
-    case 'countdown':
+   case 'countdown':
       return (
         <div className="card">
           <h2 className="subtitle">Hãy tập trung vào câu hỏi của bạn</h2>
@@ -371,8 +371,29 @@ const renderStep = () => {
           <button 
             className="button secondary"
             onClick={() => {
+              // Chọn ngay câu trả lời khi bỏ qua đếm ngược
+              const randomIndex = Math.floor(Math.random() * sampleAnswers.length);
+              setAnswer(sampleAnswers[randomIndex]);
+              
+              // Lưu lại câu hỏi và câu trả lời nếu có
+              const historyItem = {
+                question: question || "Câu hỏi không ghi lại",
+                answer: sampleAnswers[randomIndex],
+                date: new Date().toLocaleString()
+              };
+              
+              // Lưu vào localStorage nếu môi trường cho phép
+              try {
+                const history = JSON.parse(localStorage.getItem('cardHistory') || '[]');
+                history.push(historyItem);
+                localStorage.setItem('cardHistory', JSON.stringify(history.slice(-20))); // Chỉ lưu 20 mục gần nhất
+              } catch (e) {
+                console.log('Không thể lưu lịch sử');
+              }
+              
+              // Chuyển trực tiếp đến bước hiển thị câu trả lời
               setIsCountdownActive(false);
-              setStep('cards');
+              setStep('answer');
             }}
           >
             Bỏ qua đếm ngược
