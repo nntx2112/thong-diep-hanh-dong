@@ -382,5 +382,20 @@ return (
   </div>
 );
 };
-
+const sendToGoogleSheet = async (data) => {
+  try {
+    const response = await axios.post(
+      'https://script.google.com/macros/s/AKfycbx6wyQfFUyWdYhov38ihSUz8wgs6Fn1QrndeKUV2oHsrhcjveXtDT8EwbqBQrWKZHC6/exec', 
+      data,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    console.log('Đã gửi dữ liệu thành công', response.data);
+  } catch (error) {
+    console.error('Lỗi khi gửi dữ liệu:', error);
+  }
+};
 export default RandomCardApp;
