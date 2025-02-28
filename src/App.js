@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Clock, Share2, Heart, RefreshCw, HelpCircle, Settings, ThumbsUp, ThumbsDown } from 'lucide-react';
 
 const RandomCardApp = () => {
