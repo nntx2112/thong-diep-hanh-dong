@@ -235,16 +235,19 @@ const RandomCardApp = () => {
   // Hàm gửi dữ liệu đến Google Sheets
   const sendToGoogleSheet = async (data) => {
     try {
-      const response = await axios.post(
+      const response = await fetch(
         'https://script.google.com/macros/s/AKfycbx6wyQfFUyWdYhov38ihSUz8wgs6Fn1QrndeKUV2oHsrhcjveXtDT8EwbqBQrWKZHC6/exec',
-        data,
         {
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
+          body: JSON.stringify(data),
         }
       );
-      console.log('Đã gửi dữ liệu thành công', response.data);
+  
+      const result = await response.json();
+      console.log('Đã gửi dữ liệu thành công', result);
     } catch (error) {
       console.error('Lỗi khi gửi dữ liệu:', error);
     }
