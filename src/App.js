@@ -444,6 +444,8 @@ const renderStep = () => {
     } catch (e) {
       console.error("Không thể lưu phản hồi", e);
     }
-  };
+};
       
+
+
 export default RandomCardApp;
