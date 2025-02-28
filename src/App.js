@@ -269,8 +269,7 @@ const renderStep = () => {
     default:
       return null;
   }
-};
-      
+};      
     case 'answer':
       return (
         <div className="card">
