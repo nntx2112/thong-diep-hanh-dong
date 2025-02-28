@@ -242,6 +242,7 @@ const RandomCardApp = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(data),
+          mode: 'no-cors',
         }
       );
   
