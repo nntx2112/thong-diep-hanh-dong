@@ -189,168 +189,52 @@ const RandomCardApp = () => {
   ];
 
   // Xử lý đếm ngược
-  useEffect(() => {
-    let timer;
-    if (isCountdownActive && countdown > 0) {
-      timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-    } else if (isCountdownActive && countdown === 0) {
-      setIsCountdownActive(false);
-      
-      // Thay vì chuyển đến bước chọn bài, chọn ngay lá bài ngẫu nhiên
-      const randomIndex = Math.floor(Math.random() * sampleAnswers.length);
-      setAnswer(sampleAnswers[randomIndex]);
-      
-      // Lưu lại câu hỏi và câu trả lời nếu có
-      const historyItem = {
-        question: question || "Câu hỏi không ghi lại",
-        answer: sampleAnswers[randomIndex],
-        date: new Date().toLocaleString()
-      };
-      
-      // Lưu vào localStorage nếu môi trường cho phép
-      try {
-        const history = JSON.parse(localStorage.getItem('cardHistory') || '[]');
-        history.push(historyItem);
-        localStorage.setItem('cardHistory', JSON.stringify(history.slice(-20))); // Chỉ lưu 20 mục gần nhất
-      } catch (e) {
-        console.log('Không thể lưu lịch sử');
-      }
-      
-      // Hiệu ứng lật bài trước khi hiển thị câu trả lời
-      setIsCardFlipping(true);
-      setTimeout(() => {
-        setIsCardFlipping(false);
-        setStep('answer');
-      }, 1000);
-    }
-    return () => clearTimeout(timer);
-  }, [countdown, isCountdownActive]);
+useEffect(() => {
+  let timer;
+  if (isCountdownActive && countdown > 0) {
+    timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+  } else if (isCountdownActive && countdown === 0) {
+    // Tự động chọn câu trả lời khi hết thời gian
+    selectRandomAnswer();
+  }
+  return () => clearTimeout(timer);
+}, [countdown, isCountdownActive]);
 
-  // Xử lý khi chọn một lá bài
-  const handleCardSelect = () => {
-    setIsCardFlipping(true);
-    
-    // Chọn câu trả lời ngẫu nhiên
-    const randomIndex = Math.floor(Math.random() * sampleAnswers.length);
-    setAnswer(sampleAnswers[randomIndex]);
-    
-    // Lưu lại câu hỏi và câu trả lời nếu có
-    const historyItem = {
-      question: question || "Câu hỏi không ghi lại",
-      answer: sampleAnswers[randomIndex],
-      date: new Date().toLocaleString()
-    };
-    
-    // Lưu vào localStorage nếu môi trường cho phép
-    try {
-      const history = JSON.parse(localStorage.getItem('cardHistory') || '[]');
-      history.push(historyItem);
-      localStorage.setItem('cardHistory', JSON.stringify(history.slice(-20))); // Chỉ lưu 20 mục gần nhất
-    } catch (e) {
-      console.log('Không thể lưu lịch sử');
-    }
-    
-    // Hiệu ứng lật bài
-    setTimeout(() => {
-      setIsCardFlipping(false);
-      setStep('answer');
-    }, 1000);
-  };
-
-  // Xử lý phản hồi của người dùng
-  const handleFeedback = (type) => {
-    setFeedback(type);
-    
-    // Lưu phản hồi vào localStorage hoặc có thể gửi đến server
-    try {
-      const feedbackData = {
-        question: question || "Không có câu hỏi",
-        answer: answer,
-        feedbackType: type,
-        feedbackText: feedbackText,
-        timestamp: new Date().toISOString()
-      };
-      
-      // Lưu vào localStorage
-      const allFeedback = JSON.parse(localStorage.getItem('feedbackData') || '[]');
-      allFeedback.push(feedbackData);
-      localStorage.setItem('feedbackData', JSON.stringify(allFeedback));
-      
-      // Thông báo thành công
-      alert("Cảm ơn bạn đã gửi phản hồi!");
-      
-      // Reset phản hồi
-      setFeedbackText('');
-    } catch (e) {
-      console.error("Không thể lưu phản hồi", e);
-    }
+// Hàm chọn câu trả lời ngẫu nhiên và lưu lịch sử
+const selectRandomAnswer = () => {
+  const randomIndex = Math.floor(Math.random() * sampleAnswers.length);
+  const selectedAnswer = sampleAnswers[randomIndex];
+  
+  // Dừng đếm ngược
+  setIsCountdownActive(false);
+  
+  // Chọn câu trả lời
+  setAnswer(selectedAnswer);
+  
+  // Lưu lại câu hỏi và câu trả lời
+  const historyItem = {
+    question: question || "Câu hỏi không ghi lại",
+    answer: selectedAnswer,
+    date: new Date().toLocaleString()
   };
   
-  // Xử lý khi khởi động lại
-  const restart = () => {
-    setStep('question');
-    setQuestion('');
-    setCountdown(15);
-    setAnswer('');
-    setFeedback('');
-    setFeedbackText('');
-  };
+  // Lưu vào localStorage
+  try {
+    const history = JSON.parse(localStorage.getItem('cardHistory') || '[]');
+    history.push(historyItem);
+    localStorage.setItem('cardHistory', JSON.stringify(history.slice(-20)));
+  } catch (e) {
+    console.log('Không thể lưu lịch sử');
+  }
+  
+  // Chuyển sang bước hiển thị câu trả lời
+  setStep('answer');
+};
 
-  // Render các màn hình khác nhau dựa vào bước hiện tại
-  // Render các màn hình khác nhau dựa vào bước hiện tại
+// Render các màn hình khác nhau dựa vào bước hiện tại
 const renderStep = () => {
   switch (step) {
-    case 'intro':
-      return (
-        <div className="card">
-          <h1 className="title">Ứng Dụng Rút Bài Ngẫu Nhiên</h1>
-          <div className="instruction-box">
-            <h2 className="subtitle">Hướng dẫn sử dụng:</h2>
-            <ol className="instruction-list">
-              <li>1. Dành 10 đến 15 giây tập trung vào câu hỏi của bạn. Các câu hỏi nên là những câu hỏi đóng.</li>
-              <li>2. Sau khi đếm ngược kết thúc, một lá bài ngẫu nhiên sẽ xuất hiện với câu trả lời dành cho bạn.</li>
-              <li>3. Lặp lại quá trình này cho những câu hỏi tiếp theo.</li>
-            </ol>
-          </div>
-          <button 
-            className="button"
-            onClick={() => setStep('question')}
-          >
-            Bắt Đầu
-          </button>
-        </div>
-      );
-      
-    case 'question':
-      return (
-        <div className="card">
-          <h2 className="subtitle">Nghĩ về câu hỏi của bạn</h2>
-          <div className="input-container">
-            <textarea
-              className="input-field"
-              placeholder="Nhập câu hỏi của bạn ở đây (không bắt buộc)..."
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-            />
-            <p className="hint-text">Gợi ý: Hãy đặt câu hỏi có thể trả lời bằng Có/Không hoặc câu trả lời ngắn gọn.</p>
-          </div>
-          <button 
-            className="button"
-            onClick={() => {
-              setIsCountdownActive(true);
-              setStep('countdown');
-            }}
-          >
-            Tiếp Tục
-          </button>
-          
-          <div className="message-box">
-            <p className="mystical-text">✧ Hãy để tâm trí bạn thật tĩnh lặng trước khi đặt câu hỏi ✧</p>
-          </div>
-        </div>
-      );
-      
-   case 'countdown':
+    case 'countdown':
       return (
         <div className="card">
           <h2 className="subtitle">Hãy tập trung vào câu hỏi của bạn</h2>
@@ -370,31 +254,7 @@ const renderStep = () => {
           
           <button 
             className="button secondary"
-            onClick={() => {
-              // Chọn ngay câu trả lời khi bỏ qua đếm ngược
-              const randomIndex = Math.floor(Math.random() * sampleAnswers.length);
-              setAnswer(sampleAnswers[randomIndex]);
-              
-              // Lưu lại câu hỏi và câu trả lời nếu có
-              const historyItem = {
-                question: question || "Câu hỏi không ghi lại",
-                answer: sampleAnswers[randomIndex],
-                date: new Date().toLocaleString()
-              };
-              
-              // Lưu vào localStorage nếu môi trường cho phép
-              try {
-                const history = JSON.parse(localStorage.getItem('cardHistory') || '[]');
-                history.push(historyItem);
-                localStorage.setItem('cardHistory', JSON.stringify(history.slice(-20))); // Chỉ lưu 20 mục gần nhất
-              } catch (e) {
-                console.log('Không thể lưu lịch sử');
-              }
-              
-              // Chuyển trực tiếp đến bước hiển thị câu trả lời
-              setIsCountdownActive(false);
-              setStep('answer');
-            }}
+            onClick={selectRandomAnswer}
           >
             Bỏ qua đếm ngược
           </button>
@@ -404,18 +264,12 @@ const renderStep = () => {
           </div>
         </div>
       );
-      
-    case 'cards':
-      return (
-        <div className="card">
-          <h2 className="subtitle">Đang chọn lá bài ngẫu nhiên cho bạn...</h2>
-          <div className="card-placeholder">
-            <div className="card-symbol">⋆</div>
-            
-            {/* Các hiệu ứng có thể được thêm vào bằng CSS trong file styles.css */}
-          </div>
-        </div>
-      );
+    
+    // Các phần code khác của renderStep giữ nguyên
+    default:
+      return null;
+  }
+};
       
     case 'answer':
       return (
