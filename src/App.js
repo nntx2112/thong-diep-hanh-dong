@@ -268,8 +268,7 @@ const renderStep = () => {
     // Các phần code khác của renderStep giữ nguyên
     default:
       return null;
-  }
-};      
+  }   
     case 'answer':
       return (
         <div className="card">
